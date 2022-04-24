@@ -3,6 +3,7 @@ import { getDistance } from "geolib";
 import { lookUp } from "geojson-places";
 import * as Suncalc from "suncalc";
 import './App.css';
+import { useEffect } from "react/cjs/react.production.min";
 
 const App = () => {
   const [latitude, setLatitude] = useState(0);
@@ -35,6 +36,12 @@ const App = () => {
     </>
   );
 
+  useEffect( () => {
+    setLatitude(0);
+    setLongitude(0);
+    setCountryName("");
+  }, [part]);
+
   const usegpsdist = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;
@@ -54,30 +61,29 @@ const App = () => {
   const calculateCountry = (tempLat, tempLong) => {
     setlongerror("");
     setlaterror("");
+    let check = 0;
     if (isNaN(tempLat)) {
       setlaterror("Latitude must be between -90 and 90");
-      setLatitude(0);
-      setLongitude(0);
-      return;
+      check = 1;
     }
     if (isNaN(tempLong)) {
       setlongerror("Longitude must be between -180 and 180");
-      setLatitude(0);
-      setLongitude(0);
-      return;
+      check = 1;
     }
-    tempLat = parseInt(tempLat);
-    tempLong = parseInt(tempLong);
-    const result = lookUp(tempLat, tempLong);
-    setCountryName(result?.country_a3);
+    if (check === 0) {
+      tempLat = parseInt(tempLat);
+      tempLong = parseInt(tempLong);
+      const result = lookUp(tempLat, tempLong);
+      setCountryName(result?.country_a3);
+      if (longitude > 180 || longitude < -180) {
+        setlongerror("Longitude must be between -180 and 180");
+      }
+      if (latitude > 90 || latitude < -90) {
+        setlaterror("Latitude must be between -90 and 90");
+      }
+    }
     setLatitude(0);
     setLongitude(0);
-    if (longitude > 180 || longitude < -180) {
-      setlongerror("Longitude must be between -180 and 180");
-    }
-    if (latitude > 90 || latitude < -90) {
-      setlaterror("Latitude must be between -90 and 90");
-    }
   };
 
   const calcMoonDist = () => {
