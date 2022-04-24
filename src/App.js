@@ -10,7 +10,8 @@ const App = () => {
   const [countryName, setCountryName] = useState("");
   const [distancePole, setDistancePole] = useState(0);
   const [distanceMoon, setDistanceMoon] = useState(0);
-  const [calculated, setCalculated] = useState(false);
+  const [laterror, setlaterror] = useState("");
+  const [longerror, setlongerror] = useState("");
   const [part, setPart] = useState(0);
   const day = new Date();
 
@@ -51,11 +52,20 @@ const App = () => {
   };
 
   const calculateCountry = () => {
+    setlongerror("");
+    setlaterror("");
     const result = lookUp(parseInt(latitude), parseInt(longitude));
     setCountryName(result?.country_a3);
     setLatitude(0);
     setLongitude(0);
-    setCalculated(true);
+    if(longitude > 180 || longitude < -180)
+    {
+      setlongerror("Longitude must be between -180 and 180");
+    }
+    if(latitude > 90 || latitude < -90)
+    {
+      setlaterror("Latitude must be between -90 and 90");
+    }
   };
 
   const calcMoonDist = () => {
@@ -77,8 +87,8 @@ const App = () => {
           {inputs}
           <button id="calculate" onClick={() => calculateCountry()}> Calculate </button>
           <p>{countryName}</p>
-          <span id="longitude-error" >{(calculated && (longitude > 180 || longitude < -180)) && 'boundry error longitude'}</span>
-          <span id="latitude-error" >{(calculated && (latitude > 90 || latitude < -90)) && 'boundry error latitude'}</span>
+          <span id="longitude-error" >{longerror}</span>
+          <span id="latitude-error" >{laterror}</span>
         </div>
       )}
       {part === 1 && (
