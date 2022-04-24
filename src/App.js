@@ -63,7 +63,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <p id="title" hidden={true}> {part} </p>
+      <p id="title" hidden={true}>calc{part + 1}</p>
       <div className="App-header">
         <h1 id='parta' onClick={() => setPart(0)}>Part A</h1>
         <h1 id='partb' onClick={() => setPart(1)}>Part B</h1>
@@ -73,7 +73,7 @@ const App = () => {
       {part === 0 && (
         <div className="parts" id="calc1">
           {inputs}
-          <button onClick={() => calculateCountry()}> Calculate </button>
+          <button id="calculate" onClick={() => calculateCountry()}> Calculate </button>
           <p>{countryName}</p>
         </div>
       )}
