@@ -51,19 +51,31 @@ const App = () => {
     setDistancePole(distance);
   };
 
-  const calculateCountry = () => {
+  const calculateCountry = (tempLat, tempLong) => {
     setlongerror("");
     setlaterror("");
-    const result = lookUp(parseInt(latitude), parseInt(longitude));
+    if (isNaN(tempLat)) {
+      setlaterror("Latitude must be between -90 and 90");
+      setLatitude(0);
+      setLongitude(0);
+      return;
+    }
+    if (isNaN(tempLong)) {
+      setlongerror("Longitude must be between -180 and 180");
+      setLatitude(0);
+      setLongitude(0);
+      return;
+    }
+    tempLat = parseInt(tempLat);
+    tempLong = parseInt(tempLong);
+    const result = lookUp(tempLat, tempLong);
     setCountryName(result?.country_a3);
     setLatitude(0);
     setLongitude(0);
-    if(longitude > 180 || longitude < -180)
-    {
+    if (longitude > 180 || longitude < -180) {
       setlongerror("Longitude must be between -180 and 180");
     }
-    if(latitude > 90 || latitude < -90)
-    {
+    if (latitude > 90 || latitude < -90) {
       setlaterror("Latitude must be between -90 and 90");
     }
   };
@@ -84,8 +96,21 @@ const App = () => {
 
       {part === 0 && (
         <div className="parts" id="calc1">
-          {inputs}
-          <button id="calculate" onClick={() => calculateCountry()}> Calculate </button>
+          <label>Latitude</label>
+          <input
+            id="lat_field"
+            type="text"
+            value={latitude}
+            onChange={(e) => setLatitude(e.target.value)}
+          />
+          <label>Longitude</label>
+          <input
+            id="lon_field"
+            type="text"
+            value={longitude}
+            onChange={(e) => setLongitude(e.target.value)}
+          />
+          <button id="calculate" onClick={() => calculateCountry(latitude, longitude)}> Calculate </button>
           <p>{countryName}</p>
           <span id="longitude-error" >{longerror}</span>
           <span id="latitude-error" >{laterror}</span>
