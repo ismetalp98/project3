@@ -150,37 +150,37 @@ const App = () => {
           <label>Year</label>
           <input
             id="year"
-            type="number"
+            type="text"
             onChange={(e) => day.year = (e.target.value)}
           />
           <label>Month</label>
           <input
             id="month"
-            type="number"
+            type="text"
             onChange={(e) => day.month = (e.target.value)}
           />
           <label>Day</label>
           <input
             id="day"
-            type="number"
+            type="text"
             onChange={(e) => day.day = (e.target.value)}
           />
           <label>Hour</label>
           <input
             id="hour"
-            type="number"
+            type="text"
             onChange={(e) => day.hour = (e.target.value)}
           />
           <label>Minute</label>
           <input
             id="minute"
-            type="number"
+            type="text"
             onChange={(e) => day.minute = (e.target.value)}
           />
           <label>Second</label>
           <input
             id="second"
-            type="number"
+            type="text"
             onChange={(e) => day.second = (e.target.value)}
           />
           <button id="calculate" onClick={() => calcMoonDist()}> Calculate </button>
