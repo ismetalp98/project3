@@ -108,6 +108,8 @@ const App = () => {
         setdateerror("Date is wrong");
       }
     }
+    setLatitude();
+    setLongitude();
   };
 
   return (
