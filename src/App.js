@@ -6,8 +6,8 @@ import './App.css';
 import { useEffect } from "react/cjs/react.production.min";
 
 const App = () => {
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
   const [countryName, setCountryName] = useState("");
   const [distancePole, setDistancePole] = useState(0);
   const [distanceMoon, setDistanceMoon] = useState(0);
@@ -37,8 +37,8 @@ const App = () => {
   );
 
   useEffect( () => {
-    setLatitude(0);
-    setLongitude(0);
+    setLatitude();
+    setLongitude();
     setCountryName("");
   }, [part]);
 
@@ -82,8 +82,8 @@ const App = () => {
         setlaterror("Latitude must be between -90 and 90");
       }
     }
-    setLatitude(0);
-    setLongitude(0);
+    setLatitude();
+    setLongitude();
   };
 
   const calcMoonDist = () => {
