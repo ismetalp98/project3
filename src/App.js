@@ -13,8 +13,16 @@ const App = () => {
   const [distanceMoon, setDistanceMoon] = useState(0);
   const [laterror, setlaterror] = useState("");
   const [longerror, setlongerror] = useState("");
+  const [dateerror, setdateerror] = useState("");
   const [part, setPart] = useState(0);
-  const day = new Date();
+  const day = {
+    year: 2020,
+    month: 1,
+    day: 1,
+    hour: 0,
+    minute: 0,
+    second: 0,
+  };
 
   const inputs = (
     <>
@@ -36,7 +44,7 @@ const App = () => {
     </>
   );
 
-  useEffect( () => {
+  useEffect(() => {
     setLatitude();
     setLongitude();
     setCountryName("");
@@ -87,9 +95,15 @@ const App = () => {
   };
 
   const calcMoonDist = () => {
-    console.log(day);
-    const moonPosition = Suncalc.getMoonPosition(day, latitude, longitude);
-    setDistanceMoon(moonPosition.distance);
+    const date = new Date(day.year, day.month, day.day, day.hour, day.minute, day.second);
+    console.log(date);
+    console.log(date.getTime());
+    if (!isNaN(date)) {
+      const moonPosition = Suncalc.getMoonPosition(day, latitude, longitude);
+      setDistanceMoon(moonPosition.distance);
+    } else {
+      setdateerror("Date is wrong");
+    }
   };
 
   return (
@@ -117,7 +131,7 @@ const App = () => {
             onChange={(e) => setLongitude(e.target.value)}
           />
           <button id="calculate" onClick={() => calculateCountry(latitude, longitude)}> Calculate </button>
-          <p id='country'>{countryName}</p>
+          <p id="country">{countryName}</p>
           <span id="longitude-error" >{longerror}</span>
           <span id="latitude-error" >{laterror}</span>
         </div>
@@ -135,42 +149,43 @@ const App = () => {
           {inputs}
           <label>Year</label>
           <input
-            id="lat_year"
+            id="year"
             type="number"
-            onChange={(e) => day.setFullYear(e.target.value)}
+            onChange={(e) => day.year = (e.target.value)}
           />
           <label>Month</label>
           <input
-            id="lat_month"
+            id="month"
             type="number"
-            onChange={(e) => day.setMonth(e.target.value)}
+            onChange={(e) => day.month = (e.target.value)}
           />
           <label>Day</label>
           <input
-            id="lat_day"
+            id="day"
             type="number"
-            onChange={(e) => day.setDate(e.target.value)}
+            onChange={(e) => day.day = (e.target.value)}
           />
           <label>Hour</label>
           <input
-            id="lat_day"
+            id="hour"
             type="number"
-            onChange={(e) => day.setHours(e.target.value)}
+            onChange={(e) => day.hour = (e.target.value)}
           />
           <label>Minute</label>
           <input
-            id="lat_day"
+            id="minute"
             type="number"
-            onChange={(e) => day.setMinutes(e.target.value)}
+            onChange={(e) => day.minute = (e.target.value)}
           />
           <label>Second</label>
           <input
-            id="lat_day"
+            id="second"
             type="number"
-            onChange={(e) => day.setSeconds(e.target.value)}
+            onChange={(e) => day.second = (e.target.value)}
           />
-          <button onClick={() => calcMoonDist()}> Calculate </button>
-          <h1>Distance to Moon is: {parseInt(distanceMoon)} km </h1>
+          <button id="calculate" onClick={() => calcMoonDist()}> Calculate </button>
+          <h1>Distance to Moon is: <p id="distance">{parseInt(distanceMoon)}</p> km </h1>
+          <span id="date-error" >{dateerror}</span>
         </div>
       )}
     </div>
