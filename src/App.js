@@ -19,26 +19,25 @@ const App = () => {
       <input
         id="lat_field"
         type="number"
+        value={latitude}
         onChange={(e) => setLatitude(e.target.value)}
       />
       <label>Longitude</label>
       <input
         id="lon_field"
         type="number"
+        value={longitude}
         onChange={(e) => setLongitude(e.target.value)}
       />
 
     </>
   );
 
-  const calcPoleDistGps = () => {
+  const usegpsdist = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;
-      const distance = getDistance(
-        { latitude, longitude },
-        { latitude: 90.0, longitude: 0.0 }
-      );
-      setDistancePole(distance);
+      setLatitude(latitude);
+      setLongitude(longitude);
     });
   };
 
@@ -64,10 +63,11 @@ const App = () => {
 
   return (
     <div className="App">
+      <p id="title" hidden={true}> {part} </p>
       <div className="App-header">
-        <h1 onClick={() => setPart(0)}>Part A</h1>
-        <h1 onClick={() => setPart(1)}>Part B</h1>
-        <h1 onClick={() => setPart(2)}>Part C</h1>
+        <h1 id='parta' onClick={() => setPart(0)}>Part A</h1>
+        <h1 id='partb' onClick={() => setPart(1)}>Part B</h1>
+        <h1 id='partc' onClick={() => setPart(2)}>Part C</h1>
       </div>
 
       {part === 0 && (
@@ -80,9 +80,9 @@ const App = () => {
       {part === 1 && (
         <div className="parts" id="calc2">
           {inputs}
-          <button onClick={() => calcPoleDistLoc()}> Calculate </button>
-          <button onClick={() => calcPoleDistGps()}> Use GPS Location </button>
-          <h1>Distances from the North Pole: {distancePole.toString().substring(0, 4)} km</h1>
+          <button id="calcdist" onClick={() => calcPoleDistLoc()}> Calculate </button>
+          <button id="usegps" onClick={() => usegpsdist()}> Use GPS </button>
+          <h1>Distances from the North Pole: <p id="distance">{distancePole.toString().substring(0, 4)}</p> km</h1>
         </div>
       )}
       {part === 2 && (
@@ -125,7 +125,7 @@ const App = () => {
             onChange={(e) => day.setSeconds(e.target.value)}
           />
           <button onClick={() => calcMoonDist()}> Calculate </button>
-          <h1>Distance to Moon is: { parseInt(distanceMoon) } km </h1>
+          <h1>Distance to Moon is: {parseInt(distanceMoon)} km </h1>
         </div>
       )}
     </div>
