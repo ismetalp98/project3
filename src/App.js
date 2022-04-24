@@ -11,11 +11,7 @@ const App = () => {
   const [distancePole, setDistancePole] = useState(0);
   const [distanceMoon, setDistanceMoon] = useState(0);
   const [part, setPart] = useState(0);
-  const day = {
-    year: 2022,
-    month: 1,
-    day: 1,
-  }
+  const day = new Date();
 
   const inputs = (
     <>
@@ -61,8 +57,8 @@ const App = () => {
   };
 
   const calcMoonDist = () => {
-    const date = new Date(day.year, day.month - 1, day.day);
-    const moonPosition = Suncalc.getMoonPosition(date, latitude, longitude);
+    console.log(day);
+    const moonPosition = Suncalc.getMoonPosition(day, latitude, longitude);
     setDistanceMoon(moonPosition.distance);
   };
 
@@ -86,7 +82,7 @@ const App = () => {
           {inputs}
           <button onClick={() => calcPoleDistLoc()}> Calculate </button>
           <button onClick={() => calcPoleDistGps()}> Use GPS Location </button>
-          <h1>Distances from the North Pole: {distancePole} meters</h1>
+          <h1>Distances from the North Pole: {distancePole.toString().substring(0, 4)} km</h1>
         </div>
       )}
       {part === 2 && (
@@ -96,22 +92,40 @@ const App = () => {
           <input
             id="lat_year"
             type="number"
-            onChange={(e) => day.year = e.target.value}
+            onChange={(e) => day.setFullYear(e.target.value)}
           />
           <label>Month</label>
           <input
             id="lat_month"
             type="number"
-            onChange={(e) => day.month = e.target.value}
+            onChange={(e) => day.setMonth(e.target.value)}
           />
           <label>Day</label>
           <input
             id="lat_day"
             type="number"
-            onChange={(e) => day.day = e.target.value}
+            onChange={(e) => day.setDate(e.target.value)}
+          />
+          <label>Hour</label>
+          <input
+            id="lat_day"
+            type="number"
+            onChange={(e) => day.setHours(e.target.value)}
+          />
+          <label>Minute</label>
+          <input
+            id="lat_day"
+            type="number"
+            onChange={(e) => day.setMinutes(e.target.value)}
+          />
+          <label>Second</label>
+          <input
+            id="lat_day"
+            type="number"
+            onChange={(e) => day.setSeconds(e.target.value)}
           />
           <button onClick={() => calcMoonDist()}> Calculate </button>
-          <h1>Distance to Moon is: { distanceMoon } meters</h1>
+          <h1>Distance to Moon is: { parseInt(distanceMoon) } km </h1>
         </div>
       )}
     </div>
