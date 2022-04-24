@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { getDistance } from "geolib";
 import { lookUp } from "geojson-places";
 import * as Suncalc from "suncalc";
 import './App.css';
+import { useEffect } from "react/cjs/react.production.min";
 
 const App = () => {
-  const [latitude, setLatitude] = useState();
-  const [longitude, setLongitude] = useState();
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
   const [countryName, setCountryName] = useState("");
   const [distancePole, setDistancePole] = useState(0);
   const [distanceMoon, setDistanceMoon] = useState(0);
   const [laterror, setlaterror] = useState("");
   const [longerror, setlongerror] = useState("");
-  const [dateerror, setdateerror] = useState("");
   const [part, setPart] = useState(0);
-  const [dayState, setDayState] = useState({
-    year: 'asd',
-    month: 'asd',
-    day: 'asd',
-    hour: 'asd',
-    minute: 'asd',
-    second: 'asd',
-  });
+  const day = new Date();
 
   const inputs = (
     <>
@@ -43,9 +36,9 @@ const App = () => {
     </>
   );
 
-  useEffect(() => {
-    setLatitude();
-    setLongitude();
+  useEffect( () => {
+    setLatitude(0);
+    setLongitude(0);
     setCountryName("");
   }, [part]);
 
@@ -89,25 +82,14 @@ const App = () => {
         setlaterror("Latitude must be between -90 and 90");
       }
     }
-    setLatitude();
-    setLongitude();
+    setLatitude(0);
+    setLongitude(0);
   };
 
   const calcMoonDist = () => {
-    if (dayState.month < 0 || dayState.month > 12 || dayState.day < 0 || dayState.day > 31 || dayState.hour < 0 || dayState.hour > 23 || dayState.minute < 0 || dayState.minute > 59 || dayState.second < 0 || dayState.second > 59) {
-      setDistanceMoon('NaN');
-      setdateerror("Date is wrong");
-    } else {
-      const date = new Date(dayState.year, dayState.month, dayState.day, dayState.hour, dayState.minute, dayState.second);
-      if (!isNaN(date)) {
-        const moonPosition = Suncalc.getMoonPosition(date, latitude, longitude);
-        setDistanceMoon(moonPosition.distance);
-        setdateerror("");
-      } else {
-        setDistanceMoon('NaN');
-        setdateerror("Date is wrong");
-      }
-    }
+    console.log(day);
+    const moonPosition = Suncalc.getMoonPosition(day, latitude, longitude);
+    setDistanceMoon(moonPosition.distance);
   };
 
   return (
@@ -135,7 +117,7 @@ const App = () => {
             onChange={(e) => setLongitude(e.target.value)}
           />
           <button id="calculate" onClick={() => calculateCountry(latitude, longitude)}> Calculate </button>
-          <p id="country">{countryName}</p>
+          <p id='country'>{countryName}</p>
           <span id="longitude-error" >{longerror}</span>
           <span id="latitude-error" >{laterror}</span>
         </div>
@@ -153,44 +135,42 @@ const App = () => {
           {inputs}
           <label>Year</label>
           <input
-            id="year"
-            type="text"
-            onChange={(e) => setDayState({ ...dayState, year: e.target.value })}
+            id="lat_year"
+            type="number"
+            onChange={(e) => day.setFullYear(e.target.value)}
           />
           <label>Month</label>
           <input
-            id="month"
-            type="text"
-            onChange={(e) => setDayState({ ...dayState, month: e.target.value })}
+            id="lat_month"
+            type="number"
+            onChange={(e) => day.setMonth(e.target.value)}
           />
           <label>Day</label>
           <input
-            id="day"
-            type="text"
-            onChange={(e) => setDayState({ ...dayState, day: e.target.value })}
+            id="lat_day"
+            type="number"
+            onChange={(e) => day.setDate(e.target.value)}
           />
           <label>Hour</label>
           <input
-            id="hour"
-            type="text"
-            onChange={(e) => setDayState({ ...dayState, hour: e.target.value })}
+            id="lat_day"
+            type="number"
+            onChange={(e) => day.setHours(e.target.value)}
           />
           <label>Minute</label>
           <input
-            id="minute"
-            type="text"
-            onChange={(e) => setDayState({ ...dayState, minute: e.target.value })}
+            id="lat_day"
+            type="number"
+            onChange={(e) => day.setMinutes(e.target.value)}
           />
           <label>Second</label>
           <input
-            id="second"
-            type="text"
-            onChange={(e) => setDayState({ ...dayState, second: e.target.value })}
+            id="lat_day"
+            type="number"
+            onChange={(e) => day.setSeconds(e.target.value)}
           />
-          <button id="calculate" onClick={() => calcMoonDist()}> Calculate </button>
-          <button id="usegps" onClick={() => usegpsdist()}> Use GPS </button>
-          <h1>Distance to Moon is: <p id="distance">{parseInt(distanceMoon)}</p> km </h1>
-          <span id="date-error" >{dateerror}</span>
+          <button onClick={() => calcMoonDist()}> Calculate </button>
+          <h1>Distance to Moon is: {parseInt(distanceMoon)} km </h1>
         </div>
       )}
     </div>
