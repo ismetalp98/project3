@@ -117,7 +117,7 @@ const App = () => {
             onChange={(e) => setLongitude(e.target.value)}
           />
           <button id="calculate" onClick={() => calculateCountry(latitude, longitude)}> Calculate </button>
-          <p>{countryName}</p>
+          <p id='country'>{countryName}</p>
           <span id="longitude-error" >{longerror}</span>
           <span id="latitude-error" >{laterror}</span>
         </div>
