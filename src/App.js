@@ -10,6 +10,7 @@ const App = () => {
   const [countryName, setCountryName] = useState("");
   const [distancePole, setDistancePole] = useState(0);
   const [distanceMoon, setDistanceMoon] = useState(0);
+  const [calculated, setCalculated] = useState(false);
   const [part, setPart] = useState(0);
   const day = new Date();
 
@@ -51,8 +52,10 @@ const App = () => {
 
   const calculateCountry = () => {
     const result = lookUp(parseInt(latitude), parseInt(longitude));
-    console.log(result);
     setCountryName(result?.country_a3);
+    setLatitude(0);
+    setLongitude(0);
+    setCalculated(true);
   };
 
   const calcMoonDist = () => {
@@ -63,7 +66,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <p id="title" hidden={true}>calc{part + 1}</p>
       <div className="App-header">
         <h1 id='parta' onClick={() => setPart(0)}>Part A</h1>
         <h1 id='partb' onClick={() => setPart(1)}>Part B</h1>
@@ -75,6 +77,8 @@ const App = () => {
           {inputs}
           <button id="calculate" onClick={() => calculateCountry()}> Calculate </button>
           <p>{countryName}</p>
+          <span id="longitude-error" >{(calculated && (longitude > 180 || longitude < -180)) && 'boundry error longitude'}</span>
+          <span id="latitude-error" >{(calculated && (latitude > 90 || latitude < -90)) && 'boundry error latitude'}</span>
         </div>
       )}
       {part === 1 && (
