@@ -99,7 +99,7 @@ const App = () => {
     console.log(date);
     console.log(date.getTime());
     if (!isNaN(date)) {
-      const moonPosition = Suncalc.getMoonPosition(day, latitude, longitude);
+      const moonPosition = Suncalc.getMoonPosition(date, latitude, longitude);
       setDistanceMoon(moonPosition.distance);
     } else {
       setdateerror("Date is wrong");
